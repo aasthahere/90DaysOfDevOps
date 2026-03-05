@@ -1,0 +1,26 @@
+# Uses a matrix strategy to run the same job across:
+# Python versions: 3.10, 3.11, 3.12
+# Each job installs Python and prints the version
+# # Watch all 3 run in parallel
+name: matrix workflow
+on:
+    push:
+        branches:
+            - main
+jobs:
+    download-python:
+        runs-on: ubuntu-latest
+        strategy:
+            matrix:
+                python-version: [3.10, 3.11, 3.12] # Define the matrix with different Python versions
+
+        steps:
+            - name: Checkout code
+              uses: actions/checkout@v2
+
+            - name: print python version from matrix
+              run: |
+                  echo "Testing with Python current version: ${{ matrix.python-version }}" # Print the current Python version from the matrix
+
+            - name: Print Python version
+              run: python --version # Print the installed Python version
