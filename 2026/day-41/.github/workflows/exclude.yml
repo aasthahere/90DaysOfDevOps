@@ -1,0 +1,41 @@
+# In your matrix, exclude one specific combination (e.g., Python 3.10 on Windows)
+# Set fail-fast: false — trigger a failure in one job and observe what happens to the rest
+# Write in your notes: What does fail-fast: true (the default) do vs false?
+name: matrix workflow with exclusion
+
+on:
+    push:
+        branches:
+            - main
+
+jobs:
+    download-python:
+        runs-on: ${{ matrix.os }}
+
+        strategy:
+            fail-fast: false # if the job matrix fail next job continue running 
+            matrix:
+                os: [ubuntu-latest, windows-latest]
+                python-version: [3.10, 3.11, 3.12]
+                exclude:
+                    - os: windows-latest
+                      python-version: 3.10
+
+        steps:
+            - name: Checkout code
+              uses: actions/checkout@v4
+
+            - name: Setup Python
+              uses: actions/setup-python@v5
+              with:
+                  python-version: ${{ matrix.python-version }}
+
+            - name: Print matrix info
+              run: echo "Running on ${{ matrix.os }} with Python ${{ matrix.python-version }}"
+
+            - name: Force failure for one job        # this will not run 
+              if: matrix.os == 'ubuntu-latest' && matrix.python-version == '3.10'
+              run: exit 1
+
+            - name: Print Python version
+              run: python --version

@@ -1,0 +1,23 @@
+# Create .github/workflows/manual.yml with a workflow_dispatch: trigger
+# Add an input that asks for an environment name (staging/production)
+# Print the input value in a step
+# Go to the Actions tab → find the workflow → click Run workflow
+name: manual trigger workflow
+on:
+    workflow_dispatch: # Trigger manually from the Actions tab
+        inputs:
+            environment: # Input name
+                description: "Select the environment" # Description for the input
+                required: true # Make it required
+                default: "staging" # Default value
+jobs:
+    manual-job:
+        runs-on: ubuntu-latest
+
+        steps:
+            - name: Checkout code
+              uses: actions/checkout@v2
+
+            - name: print the selected environment
+              run: |
+                  echo "Selected environment: ${{ github.event.inputs.environment }}" # github variable to get the input value

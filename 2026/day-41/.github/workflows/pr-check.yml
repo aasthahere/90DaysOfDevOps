@@ -1,0 +1,23 @@
+# Create .github/workflows/pr-check.yml
+# Trigger it only when a pull request is opened or updated against main
+# Add a step that prints: PR check running for branch: <branch name>
+# Create a new branch, push a commit, and open a PR
+# Watch the workflow run automatically
+
+name: checking PR
+on:
+    pull_request:
+        types: [opened, synchronize] # Trigger on PR opened and updated
+        branches:
+            - main # Target branch  for the PR
+jobs:
+    pr-check:
+        runs-on: ubuntu-latest
+
+        steps:
+            - name: Checkout code
+              uses: actions/checkout@v2
+
+            - name: print PR check message
+              run: |
+                  echo "PR check running for branch: ${{ github.head_ref }}" # github variable to get the branch name of the PR

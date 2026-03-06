@@ -1,0 +1,17 @@
+name: sheduled workflow
+on:
+    schedule:
+        - cron: "0 0 * * *" # Trigger at midnight every day
+jobs:
+    scheduled-job:
+        runs-on: ubuntu-latest
+
+        steps:
+            - name: Checkout code
+              uses: actions/checkout@v2
+
+            - name: print scheduled workflow message
+              run: echo "This is a scheduled workflow running at midnight every day"
+
+            - name: print the current date and time
+              run: date "+%Y-%m-%d %H:%M:%S"
