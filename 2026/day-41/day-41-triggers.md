@@ -42,7 +42,8 @@
   0 9 * * 1
    ```
 
-+ Output : i will show you after mid-night 🤭
+  <img width="1920" height="918" alt="Screenshot (296)" src="https://github.com/user-attachments/assets/09bc0d07-5c66-476d-913c-c29ce0127d99" />
+
 
 ---
 
