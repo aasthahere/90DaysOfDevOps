@@ -1,0 +1,30 @@
+# On the ubuntu-latest runner, run a step that prints:
+# Docker version
+# Python version
+# Node version
+# Git version
+
+name: version workflow
+on:
+    push:
+        branches:
+            - main
+jobs:
+    check-versions:
+        runs-on: ubuntu-latest
+
+        steps:
+            - name: Checkout code
+              uses: actions/checkout@v4
+
+            - name: Print Docker version
+              run: docker --version
+
+            - name: Print Python version
+              run: python --version
+
+            - name: Print Node version
+              run: node --version
+
+            - name: Print Git version
+              run: git --version
