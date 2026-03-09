@@ -1,0 +1,46 @@
+# In a workflow, add:
+# A step that only runs when the branch is main
+# A step that only runs when the previous step failed
+# A job that only runs on push events, not on pull requests
+# A step with continue-on-error: true — what does this do?
+
+name: conditions-practiced
+
+on:
+ push:
+   branches: [main]
+ pull_request:
+   branches: [main]
+ workflow_dispatch:
+
+jobs:
+  to-main:
+   runs-on: ubuntu-latest
+   steps:
+     - name: runs when the branch is main
+       if: github.ref == 'refs/heads/main'
+       run: |
+         echo "this will runs when the branch is main"
+         exit 1
+       
+     - name: only runs when the previous step is failed
+       if: failure()
+       run: echo "Previous step failed"
+
+  to-push:
+    if: github.event_name != 'pull_request'
+    runs-on: ubuntu-latest
+    steps:
+      - name: this will only run on push 
+        run: echo "only run on push"
+        
+      - name: continue-on-error
+        run: |
+          echo "This step will fail"
+          exit 1
+        continue-on-error: true
+      
+  
+  
+
+

@@ -1,0 +1,27 @@
+name : multijobs practice
+
+on:
+  workflow_dispatch:
+    
+     
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: prints Building the app
+        run: echo "buildig the  application"
+
+  test:
+    needs: build
+    runs-on: ubuntu-latest
+    steps:
+      - name: prints Running tests
+        run: echo "Running tests"
+
+  deploy:
+    needs: test
+    runs-on: ubuntu-latest
+    steps:
+       - name: prints Deploying
+         run: echo "deployinggg"
+         

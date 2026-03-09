@@ -1,0 +1,17 @@
+name: Artifact practice
+on:
+  push:
+     branches: [main]
+jobs:
+    details:
+      runs-on: ubuntu-latest
+      steps:
+        - name: Check if secret is set
+          run: |
+              if [ -n "${{ secrets.MY_SECRET_MESSAGE}}" ]; then
+                echo "The secret is set: true"
+              else
+                echo "The secret is set: false or empty"
+              fi
+        - name: read my passward
+          run: echo "${{ secrets.MY_SECRET_MESSAGE }}" 

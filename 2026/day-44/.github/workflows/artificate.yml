@@ -1,0 +1,26 @@
+name: Artifac Workflow
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: create a log file
+        run: |
+          echo "Build started..." > log-report.txt
+          echo "Running tests..." >> log-report.txt
+          echo "All tests passed successfully!" >> log-report.txt
+
+      - name: this will Upload report-logs artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: test-log-report
+          path: log-report.txt
