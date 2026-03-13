@@ -14,6 +14,7 @@
 Test it: create a PR, push an update to it, then merge it. Watch the workflow fire each time with a different event type.
 
 ```
+<img width="1920" height="894" alt="Screenshot (350)" src="https://github.com/user-attachments/assets/12b14dfb-0876-42f9-95ae-a3b08801ea47" />
 
 
 ---
@@ -36,6 +37,9 @@ Test it: create a PR, push an update to it, then merge it. Watch the workflow fi
 Verify: Open a PR from a badly named branch — does the check fail?
 
 no its not check badly named branch...
+
+<img width="1920" height="913" alt="Screenshot (352)" src="https://github.com/user-attachments/assets/73196e55-5b39-4ee1-a4be-cc4c1096b560" />
+<img width="1920" height="769" alt="Screenshot (353)" src="https://github.com/user-attachments/assets/d3e3eb43-1028-4293-90c6-d13866908653" />
 
 ---
 
@@ -64,6 +68,7 @@ Write in your notes:
 +  If many workflows run simultaneously, ours may queue
 
 
+<img width="1920" height="845" alt="Screenshot (354)" src="https://github.com/user-attachments/assets/018e1842-8ac0-4d34-b36e-eb1dad6ccfd8" />
 
 ---
 
@@ -92,6 +97,9 @@ Write in your notes: When would you use `paths` vs `paths-ignore`?
 + paths-ignore:-
    + Use paths-ignore when we want the workflow to run for everything except certain files.   
 
+<img width="1920" height="895" alt="Screenshot (356)" src="https://github.com/user-attachments/assets/679cd2e1-13c0-4799-90af-79824fc2e3d9" />
+<img width="1920" height="718" alt="Screenshot (357)" src="https://github.com/user-attachments/assets/8053a487-37e7-4227-ade3-492dd04e2679" />
+
 ---
 
 
@@ -112,6 +120,10 @@ Create two workflows:
 **Verify:** Push a commit — does the test workflow run first, then trigger the deploy workflow?
 
 
+
+<img width="1920" height="855" alt="Screenshot (358)" src="https://github.com/user-attachments/assets/4bb6b9ad-b9fd-4798-8968-7c10ff76b6a8" />
+<img width="1920" height="729" alt="Screenshot (359)" src="https://github.com/user-attachments/assets/78f3e423-debf-4374-af53-d9ae66681bec" />
+
 ---
 
 ## Task 6: `repository_dispatch` — External Event Triggers
@@ -129,4 +141,7 @@ Write in your notes: When would an external system (like a Slack bot or monitori
    + External systems trigger pipelines when automation needs to start CI/CD from outside GitHub.
    + A Slack command can trigger deployment by this  /deploy production CI systems integration
 Another system might build code and then trigger GitHub deployment.
+
+<img width="1920" height="732" alt="Screenshot (360)" src="https://github.com/user-attachments/assets/cf737ccd-1f11-4d11-81d8-5abeacf1cfe5" />
+
 ---
