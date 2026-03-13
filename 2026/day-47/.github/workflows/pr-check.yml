@@ -1,0 +1,65 @@
+# Create .github/workflows/pr-checks.yml — a real-world PR gate:
+
+#     Trigger on pull_request to main
+#     Add a job file-size-check that:
+#         Checks out the code
+#         Fails if any file in the PR is larger than 1 MB
+#     Add a job branch-name-check that:
+#         Reads the branch name from ${{ github.head_ref }}
+#         Fails if it doesn't follow the pattern feature/*, fix/*, or docs/*
+#     Add a job pr-body-check that:
+#         Reads the PR body: ${{ github.event.pull_request.body }}
+#         Warns (but doesn't fail) if the PR description is empty
+
+# Verify: Open a PR from a badly named branch — does the check fail?
+name: PR Validation Workflow
+on:
+  pull_request:
+    branches:
+      - main
+jobs:
+  file-size-check:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v6
+        with:
+          fetch-depth: 0
+      - name: Fail if any file >1 MB
+        run: |
+            # Find all files larger than 1 MB
+            LARGE=$(find . -type f -size +1M)
+            if [ -n "$LARGE" ]; then
+              echo "::error::The following files exceed 1 MB:"
+              echo "$LARGE"
+              exit 1
+            fi
+  branch-name-check:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check branch name
+        run: |
+          BRANCH="${{ github.head_ref }}"
+          if [[ ! "$BRANCH" =~ ^(feature|fix|docs)/ ]]; then
+            echo "::error::Branch name '$BRANCH' is invalid. Must start with feature/, fix/, or docs/"
+            exit 1
+          fi
+    # steps:
+    #   - name: Validate Branch Name
+    #     uses: goshencollege/validate-branch-name@v1.0.1
+    #     with:
+    #       pattern: ^(feature|fix|docs)/
+  pr-body-check:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Warn if PR description is empty
+        uses: actions/github-script@v7
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          script: |
+            const body = context.payload.pull_request.body;
+            if (!body || body.trim() === "") {
+              core.warning("PR description is empty");
+            } else {
+              console.log("PR description is present");
+            }
