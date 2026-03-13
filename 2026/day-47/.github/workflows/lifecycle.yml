@@ -1,0 +1,49 @@
+
+#     
+#     
+#         Print which event type fired: ${{ github.event.action }}
+#         Print the PR title: ${{ github.event.pull_request.title }}
+#         Print the PR author: ${{ github.event.pull_request.user.login }}
+#         Print the source branch and target branch
+#     
+# Test it: create a PR, push an update to it, then merge it. Watch the workflow fire each time with a different event type.
+
+name: PR workflow
+on:
+  pull_request: 
+    types:                                       #Trigger on: opened, synchronize, reopened, closed
+      - opened
+      - synchronize
+      - reopened
+      - closed
+jobs:
+  pr-lifecycle:
+    runs-on: ubuntu-latest
+    steps:                                            
+
+      - name: checkout the code
+        uses: actions/checkout@v3
+
+      - name: show pr details                                          #Add steps that:
+        run: |
+          echo " event type fired: ${{ github.event.action }}"
+          echo " PR title: ${{ github.event.pull_request.title }} "
+          echo " PR author: ${{ github.event.pull_request.user.login }}"
+          echo " source branch: ${{ github.event.pull_request.head.ref }}"
+          echo " target branch:  ${{ github.event.pull_request.base.ref }}"
+
+      - name: condition checking for pr opened
+        if: ${{ github.event.action == 'opened' }}
+        run: echo "pr is opened"
+
+      - name: condition checking for pr update
+        if: ${{ github.event.action == 'synchronize' }}                           #Add a conditional step that only runs when the PR is merged (closed + merged = true)
+        run: echo "pr is updated"
+
+      - name: condition checking for pr reopened
+        if: ${{ github.event.action == 'reopened' }}
+        run: echo "pr is reopened"
+
+      - name: condition checking for pr merged
+        if:  ${{ github.event.pull_request.merged == true }}
+        run: echo "pr is merged"
