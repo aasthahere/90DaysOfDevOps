@@ -27,6 +27,7 @@ Create `.github/workflows/reusable-build-test.yml`:
 
 This workflow does NOT deploy — it only builds and tests.
 
+
 ---
 
 ### Task 3: Reusable Workflow — Docker Build & Push
@@ -126,7 +127,7 @@ Create `.github/workflows/health-check.yml`:
    Every 12 hours → health check
    ```
 3. Fill in your notes: What would you add next? (Slack notifications? Multi-environment? Rollback?)
-
++ i would add rollback 
 
 
 ---
