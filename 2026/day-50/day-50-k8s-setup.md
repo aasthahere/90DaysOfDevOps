@@ -70,6 +70,8 @@
     +**Worker node stops responding.**
     + **The control plane detects the node failure**
     + **Kubernetes detects the failure and recreates the pods on another healthy node.**
+ 
+      https://github.com/Aliyas-22/90DaysOfDevOps/blob/4cbb6f0901f0eaeb61c003c02144e126b4aedad5/2026/day-50/kubernetes-architechture.jpeg
 
 ---
 ### Task 3: Install kubectl
@@ -94,7 +96,7 @@ Verify:
 kubectl version --client
 ```
 
-
+https://github.com/Aliyas-22/90DaysOfDevOps/blob/4cbb6f0901f0eaeb61c003c02144e126b4aedad5/2026/day-50/Screenshot%20(383).png
 ---
 
 ### Task 4: Set Up Your Local Cluster
@@ -164,8 +166,9 @@ kubectl get namespaces
 
 # See ALL pods running in the cluster (across all namespaces)
 kubectl get pods -A
-```
 
+```
+https://github.com/Aliyas-22/90DaysOfDevOps/blob/4cbb6f0901f0eaeb61c003c02144e126b4aedad5/2026/day-50/Screenshot%20(384).png
 Look at the pods running in the `kube-system` namespace:
 ```bash
 kubectl get pods -n kube-system
