@@ -1,0 +1,11 @@
+name: simple test file
+on:
+  push:
+   branches: [main]
+jobs:
+ printing:
+   runs-on: ubuntu-latest
+   steps:
+     - name: print the name of the file
+       run: |
+        echo "Workflow name: $GITHUB_WORKFLOW"

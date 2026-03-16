@@ -1,0 +1,22 @@
+name: greet workflow
+
+on: push
+
+jobs:
+  greet:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v4
+
+      - name: Run greeting action
+        id: greet
+        uses: ./.github/actions/setup-and-greet
+        with:
+          name: Aliya
+          language: en
+
+      - name: Check output
+        run: |
+         echo "Greeting completed: ${{ steps.greet.outputs.greeted }}"

@@ -1,0 +1,50 @@
+
+#     Define inputs: name and language (default: en)
+#     Add steps that:
+#         Print a greeting in the specified language
+#         Print the current date and runner OS
+#         Set an output called greeted with value true
+#     Use the composite action in a new workflow with uses: ./.github/actions/setup-and-greet
+
+# Verify: Does your custom action run and print the greeting?
+
+name: costum greet workflow
+description: Greets the user and prints system info
+
+inputs:
+  name:
+    description: "Name of the person to greet"
+    required: true
+  language:
+    description: "Greeting language"
+    required: false
+    default: en
+
+outputs:
+  greeted:
+    description: "Whether greeting happened"
+
+runs:
+  using: "composite"
+  steps:
+    - name: Print greeting
+      shell: bash
+      run: |
+        if [ "${{ inputs.language }}" = "en" ]; then
+          echo "Hello ${{ inputs.name }}"
+        elif [ "${{ inputs.language }}" = "es" ]; then
+          echo "Hola ${{ inputs.name }}"
+        else
+          echo "Hello ${{ inputs.name }}"
+        fi
+
+    - name: Print system info
+      shell: bash
+      run: |
+        echo "Date: $(date)"
+        echo "Runner OS: $RUNNER_OS"
+
+    - name: Set greeted output
+      shell: bash
+      run: echo "greeted=true" >> $GITHUB_OUTPUT
+      
