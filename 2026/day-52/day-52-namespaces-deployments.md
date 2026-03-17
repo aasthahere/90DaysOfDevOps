@@ -171,10 +171,76 @@ kubectl scale deployment nginx-deployment --replicas=2 -n dev
 kubectl get pods -n dev
 ```
 
-Watch how Kubernetes creates or terminates pods to match the desired count.
+Watch how Kubernetes creates or terminates pods to match the desired count.  
 
 You can also scale by editing the manifest — change `replicas: 4` in your YAML file and run `kubectl apply -f nginx-deployment.yaml` again.
 
 **Verify:** When you scaled down from 5 to 2, what happened to the extra pods?
+ + **the extra Pod is automatically deleted by Kubernetes.**
+<img width="1868" height="384" alt="Screenshot (411)" src="https://github.com/user-attachments/assets/9f7f95a3-b1fc-4396-9c3c-6ffc2fcbf16f" />
+
+   
+---
+
+### Task 6: Rolling Update
+Update the Nginx image version to trigger a rolling update:
+
+```bash
+kubectl set image deployment/nginx-deployment nginx=nginx:1.25 -n dev
+```
+
+Watch the rollout in real time:
+```bash
+kubectl rollout status deployment/nginx-deployment -n dev
+```
+
+Kubernetes replaces pods one by one — old pods are terminated only after new ones are healthy. This means zero downtime.
+
+Check the rollout history:
+```bash
+kubectl rollout history deployment/nginx-deployment -n dev
+```
+
+Now roll back to the previous version:
+```bash
+kubectl rollout undo deployment/nginx-deployment -n dev
+kubectl rollout status deployment/nginx-deployment -n dev
+```
+
+Verify the image is back to the previous version:
+```bash
+kubectl describe deployment nginx-deployment -n dev | grep Image
+```
+
+**Verify:** What image version is running after the rollback?
+
+**1.24 version of image is rollback**
 
 ---
+
+<img width="1920" height="645" alt="Screenshot (414)" src="https://github.com/user-attachments/assets/ed055c9d-d58c-4a67-83a8-b6c899785334" />
+
+---
+
+### Task 7: Clean Up
+```bash
+kubectl delete deployment nginx-deployment -n dev
+kubectl delete pod nginx-dev -n dev
+kubectl delete pod nginx-staging -n staging
+kubectl delete namespace dev staging production
+```
+
+Deleting a namespace removes everything inside it. Be very careful with this in production.
+
+```bash
+kubectl get namespaces
+kubectl get pods -A
+```
+
+**Verify:** Are all your resources gone?
+
+ **yes!! all resource are gone..**
+
+<img width="1904" height="673" alt="Screenshot (415)" src="https://github.com/user-attachments/assets/a5d4f9b5-94e8-4b30-b246-122f2f9669b8" />
+
+ 
