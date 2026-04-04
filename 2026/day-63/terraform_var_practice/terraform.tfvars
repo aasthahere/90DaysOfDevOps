@@ -1,0 +1,5 @@
+project_name = "terraweek"
+environment  = "dev"
+instance_type = "t3.micro"
+key_name        = "secound_terraform_key_josh"
+public_key_path = "secound_terraform_key_josh.pub"
