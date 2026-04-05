@@ -1,4 +1,4 @@
-<img width="1920" height="998" alt="Screenshot (661)" src="https://github.com/user-attachments/assets/626373cc-0100-4acf-b0df-9b2293366d30" /># Day 64 -- Terraform State Management and Remote Backends
+# Day 64 -- Terraform State Management and Remote Backends
 
 ### Task 1: Inspect Your Current State
 Use your Day 63 config (or create a small config with a VPC and EC2 instance). Apply it and then explore the state:
@@ -207,4 +207,125 @@ You should see a **diff** -- Terraform detects that reality no longer matches th
 <img width="1920" height="654" alt="Screenshot (658)" src="https://github.com/user-attachments/assets/398f93cb-edb1-4414-8dd8-d55d408bac1a" />
 <img width="1920" height="458" alt="Screenshot (662)" src="https://github.com/user-attachments/assets/1b86b851-7249-436b-8b93-1ebf7184b2e8" />
 
-     
+---
+## Documentation
+Create `day-64-state-management.md` with:
+
+- Diagram: local state vs remote state set
+
+LOCAL STATE
+-----------
+  Laptop
+   ->
+terraform.tfstate (stored locally)
+
+
+REMOTE STATE
+------------
+ Laptop
+   ->
+Terraform
+   ->
+S3 Bucket (stores state)
+   ->
+DynamoDB (handles locking)
+
+
+- Explanation of state drift with your real example
+
+  ##  State Drift (Real Example)
+
+State drift happens when the actual infrastructure in AWS is changed manually and no longer matches the Terraform configuration.
+
+###  My Real Example
+
+- I created an EC2 instance using Terraform.
+- In my Terraform code, the tag was:
+
+
+### What I did manually
+
+- I went to the AWS Console.
+- Changed the tag to:
+
+Now the Terraform configuration and actual infrastructure were different. This is called **state drift**.
+
+###  How Terraform detected it
+
+I ran:
+
+```bash
+terraform plan
+```
+- When to use: `state mv`, `state rm`, `import`, `force-unlock`, `refresh`
+##  When to Use Terraform State Commands
+
+###  `terraform state mv`
+Used when you want to rename or move a resource in Terraform without recreating it.
+
+**When to use:**
+- Renaming a resource (e.g., `imported` → `logs_bucket`)
+- Moving resources between modules
+- Refactoring Terraform code
+
+**Key point:**  
+Infrastructure stays the same, only the state reference changes.
+
+---
+
+###  `terraform state rm`
+Used to remove a resource from Terraform state without deleting it in AWS.
+
+**When to use:**
+- Stop managing a resource with Terraform
+- Resource should exist but outside Terraform control
+- Fixing broken or incorrect state
+
+** Note:**  
+Terraform may try to recreate the resource in the next `plan`.
+
+---
+
+###  `terraform import`
+Used to bring an existing AWS resource under Terraform management.
+
+**When to use:**
+- Infrastructure already exists (created manually or by another tool)
+- You want Terraform to start managing it
+
+**Key point:**  
+It does NOT create the resource, only adds it to the state.
+
+---
+
+###  `terraform force-unlock`
+Used to manually release a stuck state lock.
+
+**When to use:**
+- Terraform process crashed
+- Network issue interrupted execution
+- Lock is not released automatically
+
+**Use carefully:**  
+Only use when you are sure no other operation is running.
+
+---
+
+###  `terraform refresh`
+Used to update Terraform state with the real infrastructure state.
+
+**When to use:**
+- Sync state with actual AWS resources
+- Detect manual changes (state drift)
+- Before running plan in uncertain situations
+
+**Key point:**  
+It does not change infrastructure, only updates the state file.
+
+---
+
+
+
+
+
+
