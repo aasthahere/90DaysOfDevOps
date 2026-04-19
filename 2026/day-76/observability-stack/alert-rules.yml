@@ -1,0 +1,53 @@
+groups:
+  - name: system-alerts
+    rules:
+
+      # 🔥 CPU Alert
+      - alert: HighCPUUsage
+        expr: 100 - (avg(rate(node_cpu_seconds_total{mode="idle"}[5m])) * 100) > 80
+        for: 1m
+        labels:
+          severity: warning
+        annotations:
+          summary: "High CPU usage detected"
+          description: "CPU usage is above 80% (current: {{ $value }}%)"
+
+      # 🔥 Memory Alert
+      - alert: HighMemoryUsage
+        expr: (1 - node_memory_MemAvailable_bytes / node_memory_MemTotal_bytes) * 100 > 85
+        for: 1m
+        labels:
+          severity: warning
+        annotations:
+          summary: "High memory usage detected"
+          description: "Memory usage is above 85% (current: {{ $value }}%)"
+
+      # 🔥 Disk Alert
+      - alert: HighDiskUsage
+        expr: (1 - node_filesystem_avail_bytes{mountpoint="/"} / node_filesystem_size_bytes{mountpoint="/"}) * 100 > 90
+        for: 2m
+        labels:
+          severity: critical
+        annotations:
+          summary: "Disk space running low"
+          description: "Disk usage above 90% (current: {{ $value }}%)"
+
+      # 🔥 Container Down (FIXED VERSION ✅)
+      - alert: ContainerDown
+        expr: container_last_seen{name="grafana"} < time() - 30
+        for: 10s
+        labels:
+          severity: critical
+        annotations:
+          summary: "Container Down"
+          description: "Grafana container has not been seen for 30 seconds"
+
+      # 🔥 Target Down (MOST RELIABLE ✅)
+      - alert: TargetDown
+        expr: up == 0
+        for: 10s
+        labels:
+          severity: critical
+        annotations:
+          summary: "Target Down"
+          description: "{{ $labels.job }} at {{ $labels.instance }} is DOWN"
